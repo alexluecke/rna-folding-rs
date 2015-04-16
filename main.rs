@@ -11,11 +11,6 @@ fn main() {
     let n = rna_string.len();
     let mut m = [[0u64; 15]; 15];
 
-    //println!("matrix: {}", m[1][1]);
-    //println!("beta: {}", beta(&2, &3, &rna_string));
-    //println!("beta: {}", beta(&0, &2, &rna_string));
-    //println!("beta: {}", beta(&1, &4, &rna_string));
-
     for j in (1..n) {
         for i in (0..j) {
             m[i][j] = cmp::max(
@@ -38,14 +33,12 @@ fn main() {
         }
     }
 
-
     for row in m.iter() {
         for item in row.iter() {
             print!("{} ", item);
         }
         println!("");
     }
-
 }
 
 fn beta(x: &usize, y: &usize, s: &Vec<char>) -> u64 {
@@ -61,7 +54,6 @@ fn beta(x: &usize, y: &usize, s: &Vec<char>) -> u64 {
     let mut a: char = get_char_from_idx(x, s);
     let mut b: char = get_char_from_idx(y, s);
 
-    //println!("v[x]: {}, v[y]: {}", a, b);
     match a {
         'C' => if b == 'G' { 1 } else { 0 },
         'G' => if b == 'C' { 1 } else { 0 },
