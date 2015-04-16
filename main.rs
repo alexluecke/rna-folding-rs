@@ -16,29 +16,27 @@ fn main() {
     //println!("beta: {}", beta(&0, &2, &rna_string));
     //println!("beta: {}", beta(&1, &4, &rna_string));
 
-    let mut max_v: u64 = 0;
     for j in (1..n) {
-        let mut i = j-1;
-        while i > 0 {
-
-            let b = beta(&i, &j, &rna_string);
-            max_v = cmp::max(b, m[i+1][j-1]);
-
-            for k in (i..j) {
-                max_v = cmp::max(max_v, m[i][k]+ m[k+1][j]);
-            }
-            i -= 1;
+        for i in (0..j) {
+            m[i][j] = cmp::max(
+                m[i+1][j-1] + beta(&i, &j, &rna_string),
+                m[i][j-1]
+            );
         }
 
-        m[i][j] = max_v;
-
+        for i in (1..j).rev() {
+            m[i][j] = cmp::max(
+                m[i+1][j],
+                m[i][j]
+            );
+            for k in (i+1..j).rev() {
+                m[i][j] = cmp::max(
+                    m[i][j],
+                    m[i][k-1]+m[k][j]
+                );
+            }
+        }
     }
-
-    //for j in (2..n) {
-        //for i in (1..j) {
-            //m[i][j] = cmp::max(m[i+1][j], m[i][j]);
-        //}
-    //}
 
 
     for row in m.iter() {
@@ -57,29 +55,11 @@ fn beta(x: &usize, y: &usize, s: &Vec<char>) -> u64 {
     let q: isize = *y as isize;
 
     let dist = (p-q).abs();
-    if dist <= 1 {
-        return 0
-    }
 
-    let mut i = 0;
-    let mut a: char = 'x';
-    for val in s.iter() {
-        if i == *x {
-            a = *val;
-            break;
-        }
-        i += 1;
-    }
+    if dist <= 1 { return 0 }
 
-    i = 0;
-    let mut b: char = 'x';
-    for val in s.iter() {
-        if i == *y {
-            b = *val;
-            break;
-        }
-        i += 1;
-    }
+    let mut a: char = get_char_from_idx(x, s);
+    let mut b: char = get_char_from_idx(y, s);
 
     //println!("v[x]: {}, v[y]: {}", a, b);
     match a {
@@ -89,4 +69,17 @@ fn beta(x: &usize, y: &usize, s: &Vec<char>) -> u64 {
         'U' => if b == 'A' { 1 } else { 0 },
         _ => 0
     }
+}
+
+fn get_char_from_idx(idx: &usize, v: &Vec<char>) -> char {
+    let mut i = 0;
+    let mut c: char = ' ';
+    for val in v.iter() {
+        if i == *idx {
+            c = *val;
+            break;
+        }
+        i += 1;
+    }
+    return c
 }
