@@ -1,5 +1,4 @@
 use std::cmp;
-use std::char;
 
 fn main() {
 
@@ -51,8 +50,8 @@ fn beta(x: &usize, y: &usize, s: &Vec<char>) -> u64 {
 
     if dist <= 1 { return 0 }
 
-    let mut a: char = get_char_from_idx(x, s);
-    let mut b: char = get_char_from_idx(y, s);
+    let a: char = get_char_from_idx(x, s);
+    let b: char = get_char_from_idx(y, s);
 
     match a {
         'C' => if b == 'G' { 1 } else { 0 },
